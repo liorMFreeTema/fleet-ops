@@ -35,6 +35,6 @@ echo "STREAMING START: $FILE_NAME ($FILE_SIZE bytes) -> avpc@$REMOTE_IP"
 
 $AWS_BIN s3 cp "s3://$BUCKET_NAME/$FILE_NAME" - | \
 pv -s "$FILE_SIZE" -f -i 1 | \
-ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no "avpc@$REMOTE_IP" "cat > '$REMOTE_DEST'"
+ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no "ubuntu@$REMOTE_IP" "cat > '$REMOTE_DEST'"
 
 echo "SUCCESS: Transfer complete."
