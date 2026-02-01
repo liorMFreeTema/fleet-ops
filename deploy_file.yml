@@ -1,3 +1,4 @@
+
 ---
 - name: Tunnel S3 Data to Fleet
   hosts: all
@@ -26,13 +27,13 @@
     # --- TASK 3: Stream the file ---
     - name: Stream file through EC2 tunnel
       ansible.builtin.shell:
-        # Changed /home/vboxuser -> /home/ubuntu
         cmd: "./fetch_s3.sh {{ file_name }} {{ inventory_hostname }} /home/ubuntu/downloads/{{ file_name }}"
         chdir: "{{ playbook_dir }}"
       register: s3_output
       delegate_to: localhost
       throttle: 1
 
-   - name: Show Transfer Speed
+    # --- TASK 4: Show Transfer Speed ---
+    - name: Show Transfer Speed
       debug:
-        var: s3_output.stderr_lines   
+        var: s3_output.stderr_lines
