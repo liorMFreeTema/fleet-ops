@@ -1,0 +1,10 @@
+---
+- name: Install Semaphore Script Key
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Add the script's public key to CURRENT user
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user_id }}"  # <--- This uses whoever is logged in (vboxuser)
+        state: present
+        key: "{{ lookup('file', '/root/.ssh/id_rsa_semaphore.pub') }}"
