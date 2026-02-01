@@ -15,7 +15,9 @@
     # --- TASK 2: Ensure AWS CLI is installed on the RUNNER ---
     - name: Ensure AWS CLI is installed (Alpine/Docker)
       community.general.apk:
-        name: aws-cli
+        name: 
+          - aws-cli
+          - pv
         state: present
         update_cache: yes
       delegate_to: localhost
