@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e              # Exit immediately if any command fails
+set -o pipefail     # Fail the whole script if the S3 download fails (not just the SSH)
 
 # --- Configuration ---
 FILE_NAME=$1
@@ -21,14 +23,8 @@ fi
 
 echo "STREAMING: $FILE_NAME from S3 -> $REMOTE_IP (via EC2 Tunnel)"
 
-# --- The Tunnel ---
-# CRITICAL CHANGE: "vboxuser@" is now "ubuntu@"
+# --- The Tunnel (Simplified) ---
+# We don't need complex if/else checks because 'set -e' handles errors automatically
 $AWS_BIN s3 cp "s3://$BUCKET_NAME/$FILE_NAME" - | ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no "ubuntu@$REMOTE_IP" "cat > '$REMOTE_DEST'"
 
-if [ ${PIPESTATUS[0]} -eq 0 ] && [ ${PIPESTATUS[1]} -eq 0 ]; then
-    echo "SUCCESS: Transfer complete."
-    exit 0
-else
-    echo "FAILED: Stream broke. Check if S3 file exists."
-    exit 1
-fi
+echo "SUCCESS: Transfer complete."
