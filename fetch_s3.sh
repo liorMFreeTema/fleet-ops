@@ -34,7 +34,7 @@ echo "STREAMING START: $FILE_NAME ($FILE_SIZE bytes) -> avpc@$REMOTE_IP"
 # ssh ... cat  : Stream directly to file on vehicle (no temp files on EC2)
 
 $AWS_BIN s3 cp "s3://$BUCKET_NAME/$FILE_NAME" - | \
-pv -s "$FILE_SIZE" -f -i 1 | \
+pv -s "$FILE_SIZE" -f -i 0.1 | \
 ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no "ubuntu@$REMOTE_IP" "cat > '$REMOTE_DEST'"
 
 echo "SUCCESS: Transfer complete."
